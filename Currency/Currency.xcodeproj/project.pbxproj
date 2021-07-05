@@ -17,6 +17,10 @@
 		9F77C1752693991E00D017F3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F77C14A2693991C00D017F3 /* ContentView.swift */; };
 		9F77C1762693991E00D017F3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9F77C14B2693991E00D017F3 /* Assets.xcassets */; };
 		9F77C1772693991E00D017F3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9F77C14B2693991E00D017F3 /* Assets.xcassets */; };
+		9FC0A6F22693BADB00BD46C4 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FC0A6F12693BADB00BD46C4 /* Currency.swift */; };
+		9FC0A6F32693BADB00BD46C4 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FC0A6F12693BADB00BD46C4 /* Currency.swift */; };
+		9FC0A6F62693BDA500BD46C4 /* CurrencyLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FC0A6F52693BDA500BD46C4 /* CurrencyLayer.swift */; };
+		9FC0A6F72693BDA500BD46C4 /* CurrencyLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FC0A6F52693BDA500BD46C4 /* CurrencyLayer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +56,8 @@
 		9F77C16B2693991E00D017F3 /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F77C16F2693991E00D017F3 /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
 		9F77C1712693991E00D017F3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9FC0A6F12693BADB00BD46C4 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
+		9FC0A6F52693BDA500BD46C4 /* CurrencyLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyLayer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,8 +116,10 @@
 		9F77C1482693991C00D017F3 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				9F77C1492693991C00D017F3 /* CurrencyApp.swift */,
+				9FC0A6F42693BD7300BD46C4 /* API */,
+				9FC0A6F02693BA8900BD46C4 /* Model */,
 				9F1667B82693A94600A9EE6C /* View */,
+				9F77C1492693991C00D017F3 /* CurrencyApp.swift */,
 				9F77C14B2693991E00D017F3 /* Assets.xcassets */,
 			);
 			path = Shared;
@@ -161,6 +169,22 @@
 				9F77C1712693991E00D017F3 /* Info.plist */,
 			);
 			path = "Tests macOS";
+			sourceTree = "<group>";
+		};
+		9FC0A6F02693BA8900BD46C4 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				9FC0A6F12693BADB00BD46C4 /* Currency.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		9FC0A6F42693BD7300BD46C4 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				9FC0A6F52693BDA500BD46C4 /* CurrencyLayer.swift */,
+			);
+			path = API;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -320,7 +344,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9FC0A6F22693BADB00BD46C4 /* Currency.swift in Sources */,
 				9F77C1742693991E00D017F3 /* ContentView.swift in Sources */,
+				9FC0A6F62693BDA500BD46C4 /* CurrencyLayer.swift in Sources */,
 				9F1667B62693A7F000A9EE6C /* CurrencyListView.swift in Sources */,
 				9F77C1722693991E00D017F3 /* CurrencyApp.swift in Sources */,
 			);
@@ -330,7 +356,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9FC0A6F32693BADB00BD46C4 /* Currency.swift in Sources */,
 				9F77C1752693991E00D017F3 /* ContentView.swift in Sources */,
+				9FC0A6F72693BDA500BD46C4 /* CurrencyLayer.swift in Sources */,
 				9F1667B72693A7F000A9EE6C /* CurrencyListView.swift in Sources */,
 				9F77C1732693991E00D017F3 /* CurrencyApp.swift in Sources */,
 			);

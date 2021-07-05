@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct CurrencyListView: View {
+  @StateObject var currencyLayer = CurrencyLayer()
+
   var body: some View {
-    List(/*@START_MENU_TOKEN@*/0 ..< 5/*@END_MENU_TOKEN@*/) { item in
-      Text("TLC")
+    List(currencyLayer.currencies) { currency in
+      Text(currency.code)
         .padding(.trailing)
-      Text("Currency name")
+      Text(currency.name)
       Spacer()
     }
   }
