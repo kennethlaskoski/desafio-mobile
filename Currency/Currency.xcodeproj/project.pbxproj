@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9F1667B62693A7F000A9EE6C /* CurrencyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1667B52693A7F000A9EE6C /* CurrencyListView.swift */; };
+		9F1667B72693A7F000A9EE6C /* CurrencyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1667B52693A7F000A9EE6C /* CurrencyListView.swift */; };
 		9F77C1652693991E00D017F3 /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F77C1642693991E00D017F3 /* Tests_iOS.swift */; };
 		9F77C1702693991E00D017F3 /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F77C16F2693991E00D017F3 /* Tests_macOS.swift */; };
 		9F77C1722693991E00D017F3 /* CurrencyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F77C1492693991C00D017F3 /* CurrencyApp.swift */; };
@@ -35,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9F1667B52693A7F000A9EE6C /* CurrencyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyListView.swift; sourceTree = "<group>"; };
 		9F77C1492693991C00D017F3 /* CurrencyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyApp.swift; sourceTree = "<group>"; };
 		9F77C14A2693991C00D017F3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		9F77C14B2693991E00D017F3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -83,6 +86,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9F1667B82693A94600A9EE6C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				9F77C14A2693991C00D017F3 /* ContentView.swift */,
+				9F1667B52693A7F000A9EE6C /* CurrencyListView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		9F77C1432693991C00D017F3 = {
 			isa = PBXGroup;
 			children = (
@@ -99,7 +111,7 @@
 			isa = PBXGroup;
 			children = (
 				9F77C1492693991C00D017F3 /* CurrencyApp.swift */,
-				9F77C14A2693991C00D017F3 /* ContentView.swift */,
+				9F1667B82693A94600A9EE6C /* View */,
 				9F77C14B2693991E00D017F3 /* Assets.xcassets */,
 			);
 			path = Shared;
@@ -309,6 +321,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9F77C1742693991E00D017F3 /* ContentView.swift in Sources */,
+				9F1667B62693A7F000A9EE6C /* CurrencyListView.swift in Sources */,
 				9F77C1722693991E00D017F3 /* CurrencyApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -318,6 +331,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9F77C1752693991E00D017F3 /* ContentView.swift in Sources */,
+				9F1667B72693A7F000A9EE6C /* CurrencyListView.swift in Sources */,
 				9F77C1732693991E00D017F3 /* CurrencyApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
