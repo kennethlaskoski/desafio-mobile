@@ -52,7 +52,7 @@ class CurrencyLayer: ObservableObject {
           for (key, value) in response.currencies {
             newList.append(Currency(code: key, name: value))
           }
-          self.currencies = newList
+          self.currencies = newList.sorted(by: { lhs, rhs in lhs.code < rhs.code })
         }
       )
   }
