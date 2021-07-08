@@ -11,11 +11,24 @@ struct CurrencyListView: View {
   @StateObject var currencyLayer = CurrencyLayer()
 
   var body: some View {
-    List(currencyLayer.currencies) { currency in
+    VStack {
+      List(currencyLayer.currencies) { currency in
+        CurrencyView(currency: currency)
+      }
+    }
+  }
+}
+
+struct CurrencyView: View {
+  let currency: Currency
+
+  var body: some View {
+    HStack {
       Text(currency.code)
-        .padding(.trailing)
+        .font(.system(.body, design: .monospaced))
+        .padding(.trailing, 5.0)
+
       Text(currency.name)
-      Spacer()
     }
   }
 }
