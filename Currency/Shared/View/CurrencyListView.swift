@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct CurrencyListView: View {
-  @StateObject var currencyLayer = CurrencyLayer()
+  @StateObject var model = ViewModel()
 
   var body: some View {
     VStack {
-      List(currencyLayer.currencies) { currency in
+      List(model.currencies) { currency in
         CurrencyView(currency: currency)
       }
     }

@@ -7,20 +7,17 @@
 
 import Foundation
 
-struct Currency: Codable {
-  let code: String
-  let name: String
+protocol Currency {
+  var code: String { get }
+  var name: String { get }
 }
 
-extension Currency: Identifiable {
-  var id: String { code }
+protocol Money {
+  var quantity: Decimal { get }
+  var currency: Currency { get }
 }
 
-extension Currency {
-  static var formatter: NumberFormatter = {
-    var formatter = NumberFormatter()
-    formatter.minimumFractionDigits = 2
-    formatter.maximumFractionDigits = 2
-    return formatter
-  }()
+protocol Quote {
+  var date: Date { get }
+  var amount: Money { get }
 }

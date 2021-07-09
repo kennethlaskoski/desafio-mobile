@@ -8,12 +8,7 @@
 import SwiftUI
 
 struct CurrencyConvertView: View {
-  @StateObject var conversion = CurrencyConversion(
-    quote: CurrencyQuote(
-      from: Currency(code: "USD", name: "US Dollar"),
-      to: Currency(code: "BRL", name: "Brazilian Real")
-    )
-  )
+  @StateObject var model = ViewModel()
 
   var body: some View {
     VStack(alignment: .leading) {
@@ -23,28 +18,32 @@ struct CurrencyConvertView: View {
 
       TextField(
         "Amount",
-        value: $conversion.amount,
-        formatter: Currency.formatter
+        value: $model.conversion.amount,
+        formatter: ViewModel.formatter
       )
 
-      CurrencyQuoteView(quote: conversion.quote)
+      QuoteView(
+        from: model.conversion.from,
+        to: model.conversion.to
+      )
     }
     .textFieldStyle(RoundedBorderTextFieldStyle())
     .padding()
   }
 }
 
-struct CurrencyQuoteView: View {
-  var quote: CurrencyQuote
+struct QuoteView: View {
+  var from: Currency
+  var to: Currency
 
   var body: some View {
     VStack {
       CurrencyButton(
-        currency: quote.from
+        currency: from
       )
 
       CurrencyButton(
-        currency: quote.to
+        currency: to
       )
     }
   }

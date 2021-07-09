@@ -8,52 +8,104 @@
 import Combine
 import Foundation
 
-struct ListResponse: Codable {
-  let success: Bool
-  let terms: String
-  let privacy: String
-  let currencies: [String: String]
+struct CurrencyLayer {
+  private static let urlComponents: URLComponents = {
+    var components = URLComponents()
+    components.scheme = "http"
+    components.host = "api.currencylayer.com"
+    components.queryItems = [URLQueryItem(name: "access_key", value: "672e3cdb941c218df034c5b44112c19b")]
+    return components
+  }()
 }
 
-class CurrencyLayer: ObservableObject {
-  @Published private(set) var currencies: [Currency] = [
-    Currency(code: "USD", name: "Dollar"),
-    Currency(code: "BRL", name: "Real"),
-    Currency(code: "GBP", name: "Pound"),
-    Currency(code: "EUR", name: "Euro"),
-  ]
+extension CurrencyLayer {
+  struct Endpoint {
+    let url: URL
 
-  private static let apikey = "672e3cdb941c218df034c5b44112c19b"
-  private static let baseURL = URL(string: "http://api.currencylayer.com")
+    init(name: String, queryItems: [URLQueryItem]? = nil) {
+      var components = CurrencyLayer.urlComponents
+      components.path = name.isEmpty ? "" : "/\(name)"
+      if let newItems = queryItems {
+        components.queryItems!.append(contentsOf: newItems)
+      }
+      url = components.url!
+    }
+  }
+}
 
-  private var listCancellabe: AnyCancellable?
+extension CurrencyLayer.Endpoint {
+  static var list: Self {
+    CurrencyLayer.Endpoint(name: "list")
+  }
+}
 
-  init() {
-    let endpoint = "list"
-    let url = URL(string: "\(endpoint)?access_key=\(CurrencyLayer.apikey)", relativeTo: CurrencyLayer.baseURL)!
+extension CurrencyLayer.Endpoint {
+  static var live: Self {
+    CurrencyLayer.Endpoint(name: "live")
+  }
+}
 
-    let request = URLRequest(url: url)
-    let publihser = URLSession.shared.dataTaskPublisher(for: request)
+extension CurrencyLayer {
+  struct SuccessData: Codable {
+    let success: Bool
+  }
+}
 
-    listCancellabe = publihser
+extension CurrencyLayer {
+  struct Error: Codable {
+    let code: Int
+    let info: String
+  }
+
+  struct ErrorData: Codable {
+    let error: Error
+  }
+}
+
+extension CurrencyLayer.Error: Error {}
+
+extension CurrencyLayer {
+  struct LegalData: Codable {
+    let terms: String
+    let privacy: String
+  }
+}
+
+extension CurrencyLayer {
+  typealias CurrencyData = [String : String]
+  struct ListData: Codable {
+    let success: Bool
+    let terms: String
+    let privacy: String
+    let currencies: CurrencyData
+  }
+}
+
+extension CurrencyLayer {
+  typealias QuoteData = [String : String]
+  struct LiveData: Codable {
+    let timestamp: Int
+    let source: String
+    let quotes: QuoteData
+  }
+}
+
+extension CurrencyLayer {
+  static func listPublisher() -> AnyPublisher<CurrencyData, Swift.Error> {
+    let publisher = URLSession.shared.dataTaskPublisher(for: Endpoint.list.url)
+    return publisher
       .tryMap() { element -> Data in
         guard let httpResponse = element.response as? HTTPURLResponse,
               httpResponse.statusCode == 200 else {
           throw URLError(.badServerResponse)
         }
+        print(String(decoding: element.data, as: UTF8.self))
         return element.data
       }
-      .decode(type: ListResponse.self, decoder: JSONDecoder())
-      .receive(on: DispatchQueue.main)
-      .sink(
-        receiveCompletion: { print ("Received completion: \($0).") },
-        receiveValue: { response in
-          var newList: [Currency] = []
-          for (key, value) in response.currencies {
-            newList.append(Currency(code: key, name: value))
-          }
-          self.currencies = newList.sorted(by: { lhs, rhs in lhs.code < rhs.code })
-        }
-      )
+      .decode(type: ListData.self, decoder: JSONDecoder())
+      .tryMap() { element -> CurrencyData in
+        return element.currencies
+      }
+      .eraseToAnyPublisher()
   }
 }
