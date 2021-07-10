@@ -10,9 +10,15 @@ import Foundation
 
 // MARK: View data
 class ListModel: ObservableObject {
-  @Published var currencies: [Currency] = []
   private var lastListRefresh: Date?
+  @Published var currencies: [Currency] = [
+    Currency(id: "USD", name: "United States Dollar"),
+    Currency(id: "BRL", name: "Brazilian Real"),
+    Currency(id: "GBP", name: "British Pound Sterling"),
+    Currency(id: "EUR", name: "Euro"),
+  ]
 
+  private var buffer: Currency.ListRepresentation = [:]
   private var cancellable: AnyCancellable?
 }
 
@@ -32,24 +38,29 @@ extension ListModel {
 
 // MARK: API Connection
 extension ListModel {
+  private func resetList() {
+    lastListRefresh = Date()
+    currencies = self.buffer.map { pair in
+      Currency(id: pair.key, name: pair.value)
+    }.sorted(by: { lhs, rhs in lhs.id < rhs.id })
+  }
+
   func refreshList() {
     cancellable = CurrencyLayer.listPublisher()
       .receive(on: DispatchQueue.main)
       .sink(
         receiveCompletion: { completion in
           switch completion {
-            case .finished: break
-            case .failure(let error): print(error)
+          case .finished:
+            self.resetList()
+          case .failure(let error):
+            print(error)
           }
           self.cancellable?.cancel()
         },
 
-        receiveValue: { data in
-          Currency.resetList(with: data)
-          self.lastListRefresh = Date()
-          self.currencies = data.map { pair in
-            Currency(with: pair)
-          }.sorted(by: { lhs, rhs in lhs.id < rhs.id })
+        receiveValue: { list in
+          self.buffer = list
         }
       )
   }

@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct ListView: View {
-  @Environment(\.presentationMode) var presentationMode
   @EnvironmentObject var model: ListModel
   @Binding var selected: Currency
 
@@ -22,8 +21,11 @@ struct ListView: View {
         label: {
           HStack {
             CurrencyView(currency: currency)
+
             Spacer()
+
             Label("", systemImage: match ? "checkmark.circle.fill" : "circle")
+
           }
         }
       }
@@ -37,9 +39,8 @@ struct ListView: View {
           Text("Last refresh: \(model.lastRefresh)")
             .font(.subheadline)
           Spacer()
-          Text("Refresh")
+          Label("Refresh", systemImage: "arrow.triangle.2.circlepath")
             .font(.headline)
-            .padding(.trailing)
         }
         .padding(.vertical, 5.0)
         .padding(.horizontal)

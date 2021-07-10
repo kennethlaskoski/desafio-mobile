@@ -11,19 +11,19 @@ struct CurrencyView: View {
   let currency: Currency
 
   var body: some View {
-    HStack {
+    HStack(spacing: 13.0) {
       Text(currency.id)
-        .font(.system(.body, design: .monospaced))
-        .padding(.trailing, 5.0)
+        .font(.system(.callout, design: .monospaced))
 
       Text(currency.name)
+        .font(.callout)
     }
   }
 }
 
 struct CurrencyView_Previews: PreviewProvider {
   static var previews: some View {
-    let currency = Currency(id: "!!!", name: "none")
+    let currency = Currency(id: "EUR", name: "Euro")
     CurrencyView(currency: currency)
   }
 }

@@ -7,12 +7,11 @@
 
 import Foundation
 
-struct Money {
-  let quantity: Decimal
-  let currency: Currency
-}
-
 struct Quote {
   let date: Date
   let amount: Money
+
+  static func * (lhs: Money, rhs: Quote) -> Money {
+    Money(quantity: lhs.quantity * rhs.amount.quantity, currency: rhs.amount.currency)
+  }
 }

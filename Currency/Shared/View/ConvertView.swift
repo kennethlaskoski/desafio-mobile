@@ -8,57 +8,81 @@
 import SwiftUI
 
 struct ConvertView: View {
-  @EnvironmentObject var model: ConvertModel
-
   var body: some View {
-    VStack(alignment: .leading) {
-      TextField(
-        "Amount",
-        value: $model.amount,
-        formatter: model.formatter
-      )
-
-      QuoteView(
-        from: $model.from,
-        to: $model.to
-      )
+    VStack {
+      SourceView()
+      QuoteView()
+      ResultView()
     }
     .textFieldStyle(RoundedBorderTextFieldStyle())
     .padding()
   }
 }
 
-struct QuoteView: View {
-  @Binding var from: Currency
-  @Binding var to: Currency
+struct SourceView: View {
+  @EnvironmentObject var model: ConvertModel
 
   var body: some View {
     VStack {
-      CurrencyButton(currency: $from)
-      CurrencyButton(currency: $to)
+      TextField(
+        "Amount",
+        value: $model.sourceAmount,
+        formatter: model.formatter
+      )
+
+      CurrencyButton(currency: $model.sourceCurrency)
+    }
+  }
+}
+
+struct QuoteView: View {
+  @EnvironmentObject var model: ConvertModel
+
+  var body: some View {
+    VStack {
+      Text("X")
+      Text(model.formattedQuoteAmount)
+      CurrencyButton(currency: $model.quoteCurrency)
+    }
+  }
+}
+
+struct ResultView: View {
+  @EnvironmentObject var model: ConvertModel
+
+  var body: some View {
+    VStack {
+      Text("=")
+      Text(model.formattedResult)
     }
   }
 }
 
 struct CurrencyButton: View {
   @Binding var currency: Currency
+  @State private var presentList = false
 
   var body: some View {
     VStack(alignment: .leading) {
       NavigationLink(
         destination: ListView(selected: $currency),
-        label: {
-          HStack {
-            CurrencyView(currency: currency)
-              .foregroundColor(.white)
-              .padding(.vertical, 5.0)
-              .padding(.leading, 8.0)
-            Spacer()
-          }
-          .background(Color.accentColor)
-          .cornerRadius(5.0, antialiased: true)
+        isActive: $presentList
+      ) { EmptyView() }
+
+      Button {
+        presentList = true
+      }
+      label: {
+        HStack {
+          CurrencyView(currency: currency)
+          Spacer()
         }
-      )
+        .foregroundColor(.white)
+        .padding(.vertical, 5.0)
+        .padding(.leading, 8.0)
+        .background(Color.accentColor)
+        .cornerRadius(5.0, antialiased: true)
+      }
     }
   }
 }
@@ -67,6 +91,6 @@ struct CurrencyConvertView_Previews: PreviewProvider {
   static var previews: some View {
     let model = ConvertModel()
     ConvertView()
-    .environmentObject(model)
+      .environmentObject(model)
   }
 }

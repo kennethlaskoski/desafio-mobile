@@ -8,12 +8,13 @@
 import Foundation
 
 class ConvertModel: ObservableObject {
-  @Published var amount: Decimal = 1.0
-  @Published var from = Currency(with: ("USD", "United States Dollar"))
-  @Published var to = Currency(with: ("BRL", "Brazilian Real"))
+  private static let defaultSource = Money(quantity: 1.0, currency: Currency(id:"USD", name: "United States Dollar"))
 
-  var result: Decimal {
-    amount * 1.0
+  @Published var source = defaultSource
+  @Published var quote = Quote(date: Date(), amount: defaultSource)
+
+  var result: Money {
+    source * quote
   }
 }
 
@@ -29,5 +30,33 @@ extension ConvertModel {
 
   var formatter: NumberFormatter {
     ConvertModel.formatter
+  }
+
+  var formattedQuoteAmount: String {
+    formatter.string(from: quote.amount.quantity as NSNumber)!
+  }
+
+  var formattedResult: String {
+    formatter.string(from: result.quantity as NSNumber)!
+  }
+}
+
+// MARK: View binding
+extension ConvertModel {
+  var sourceAmount: Double {
+    get { source.quantity }
+    set { source = Money(quantity: newValue, currency: source.currency) }
+  }
+
+  var sourceCurrency: Currency {
+    get { source.currency }
+    set { source = Money(quantity: source.quantity, currency: newValue) }
+  }
+}
+
+extension ConvertModel {
+  var quoteCurrency: Currency {
+    get { quote.amount.currency }
+    set { quote = Quote(date: quote.date, amount: Money(quantity: quote.amount.quantity, currency: newValue)) }
   }
 }
