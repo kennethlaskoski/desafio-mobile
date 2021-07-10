@@ -8,22 +8,17 @@
 import SwiftUI
 
 struct ContentView: View {
-  @StateObject var model: ViewModel = ViewModel()
-
   @StateObject var listModel = ListModel()
-  @State private var listPresented = false
+  @StateObject var convertModel = ConvertModel()
 
   var body: some View {
-    CurrencyConvertView(presentList: $listPresented)
-
-      .fullScreenCover(
-        isPresented: $listPresented,
-        content: {
-          ListView()
-            .environmentObject(listModel)
-        }
-      )
-      .environmentObject(model)
+    NavigationView {
+      ConvertView()
+        .navigationTitle("Convert")
+    }
+    .navigationViewStyle(StackNavigationViewStyle())
+    .environmentObject(listModel)
+    .environmentObject(convertModel)
   }
 }
 

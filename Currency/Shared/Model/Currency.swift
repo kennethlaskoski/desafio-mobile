@@ -6,7 +6,7 @@
 //
 
 // MARK: Currency model
-struct Currency: Identifiable {
+struct Currency: Identifiable, Equatable {
   typealias Representation = (id: ID, name: String)
 
   private(set) var data: Representation
@@ -20,6 +20,10 @@ struct Currency: Identifiable {
 
   init(id: ID, name: String) {
     self.init(with: (id, name))
+  }
+
+  static func == (lhs: Currency, rhs: Currency) -> Bool {
+    lhs.data == rhs.data
   }
 }
 
