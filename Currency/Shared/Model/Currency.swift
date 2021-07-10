@@ -5,15 +5,11 @@
 //  Created by Kenneth Laskoski on 08/07/21.
 //
 
-// MARK: Currency model
+import Foundation
+
 struct Currency: Identifiable, Equatable {
-  typealias ListRepresentation = [ID : String]
+  typealias ID = String
 
-  let id: String
+  let id: ID
   let name: String
-
-  init(id: ID, name: String) {
-    self.id = id
-    self.name = name
-  }
 }

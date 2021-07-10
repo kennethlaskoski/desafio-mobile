@@ -8,13 +8,13 @@
 import Foundation
 
 class ConvertModel: ObservableObject {
-  private static let defaultSource = Money(quantity: 1.0, currency: Currency(id:"USD", name: "United States Dollar"))
+  private static let defaultSource = Money(value: 1.0, unit: .dollar)
 
   @Published var source = defaultSource
-  @Published var quote = Quote(date: Date(), amount: defaultSource)
+  @Published var quote = defaultSource
 
   var result: Money {
-    source * quote
+    source.converted(to: quote.unit)
   }
 }
 
@@ -33,30 +33,30 @@ extension ConvertModel {
   }
 
   var formattedQuoteAmount: String {
-    formatter.string(from: quote.amount.quantity as NSNumber)!
+    formatter.string(from: quote.value as NSNumber)!
   }
 
   var formattedResult: String {
-    formatter.string(from: result.quantity as NSNumber)!
+    formatter.string(from: result.value as NSNumber)!
   }
 }
 
 // MARK: View binding
 extension ConvertModel {
   var sourceAmount: Double {
-    get { source.quantity }
-    set { source = Money(quantity: newValue, currency: source.currency) }
+    get { source.value }
+    set { source = Money(value: newValue, unit: source.unit) }
   }
 
   var sourceCurrency: Currency {
-    get { source.currency }
-    set { source = Money(quantity: source.quantity, currency: newValue) }
+    get { source.unit.currency! }
+    set { source = Money(value: source.value, unit: Finance(symbol: newValue.id)) }
   }
 }
 
 extension ConvertModel {
   var quoteCurrency: Currency {
-    get { quote.amount.currency }
-    set { quote = Quote(date: quote.date, amount: Money(quantity: quote.amount.quantity, currency: newValue)) }
+    get { quote.unit.currency! }
+    set { quote = Quote(value: quote.value, unit: Finance(symbol: newValue.id)) }
   }
 }

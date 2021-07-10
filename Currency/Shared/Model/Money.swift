@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct Money: Equatable {
-  let quantity: Double
-  let currency: Currency
-}
+// Various names for financial amounts
+typealias Value = Measurement<Finance>
+typealias Price = Measurement<Finance>
+typealias Quote = Measurement<Finance>
+typealias Money = Measurement<Finance>

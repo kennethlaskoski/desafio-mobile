@@ -75,6 +75,10 @@ extension CurrencyLayer {
 extension CurrencyLayer.Error: Error {}
 
 // currency list representation
+extension Currency {
+  typealias ListRepresentation = [ID : String]
+}
+
 extension CurrencyLayer {
   struct ListData: Codable {
     let success: Bool
