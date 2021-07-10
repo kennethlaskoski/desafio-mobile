@@ -20,7 +20,7 @@ extension ViewModel {
 }
 
 extension ViewModel {
-  static var formatter: NumberFormatter = {
+  static var numberFormatter: NumberFormatter = {
     var formatter = NumberFormatter()
     formatter.numberStyle = .decimal
     formatter.minimumFractionDigits = 2

@@ -5,19 +5,38 @@
 //  Created by Kenneth Laskoski on 08/07/21.
 //
 
-import Foundation
+// MARK: Currency model
+struct Currency: Identifiable {
+  typealias Representation = (id: ID, name: String)
 
-protocol Currency {
-  var code: String { get }
-  var name: String { get }
+  private(set) var data: Representation
+
+  var id: String { data.id }
+  var name: String { data.name }
+
+  init(with data: Representation) {
+    self.data = data
+  }
+
+  init(id: ID, name: String) {
+    self.init(with: (id, name))
+  }
 }
 
-protocol Money {
-  var quantity: Decimal { get }
-  var currency: Currency { get }
-}
+// MARK: Currency list model
+extension Currency {
+  typealias ListRepresentation = [ID : String]
 
-protocol Quote {
-  var date: Date { get }
-  var amount: Money { get }
+  private(set) static var list: ListRepresentation = [:]
+
+  init?(with id: ID) {
+    guard let name = Currency.list[id] else {
+      return nil
+    }
+    self.init(with: (id, name))
+  }
+
+  static func resetList(with data: ListRepresentation) {
+    list = data
+  }
 }

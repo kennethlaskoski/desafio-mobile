@@ -8,11 +8,22 @@
 import SwiftUI
 
 struct ContentView: View {
+  @StateObject var model: ViewModel = ViewModel()
+
+  @StateObject var listModel = ListModel()
+  @State private var listPresented = false
+
   var body: some View {
-    VStack {
-    CurrencyConvertView()
-    CurrencyListView()
-    }
+    CurrencyConvertView(presentList: $listPresented)
+
+      .fullScreenCover(
+        isPresented: $listPresented,
+        content: {
+          ListView()
+            .environmentObject(listModel)
+        }
+      )
+      .environmentObject(model)
   }
 }
 

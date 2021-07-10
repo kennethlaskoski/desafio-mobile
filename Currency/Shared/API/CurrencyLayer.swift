@@ -8,7 +8,9 @@
 import Combine
 import Foundation
 
+// MARK: - Common URL components
 struct CurrencyLayer {
+  private static let session = URLSession.shared
   private static let urlComponents: URLComponents = {
     var components = URLComponents()
     components.scheme = "http"
@@ -18,39 +20,46 @@ struct CurrencyLayer {
   }()
 }
 
+// MARK: - Endpoints
 extension CurrencyLayer {
   struct Endpoint {
     let url: URL
+    let session: URLSession?
 
-    init(name: String, queryItems: [URLQueryItem]? = nil) {
+    init(_ name: String, queryItems: [URLQueryItem]? = nil, on session: URLSession? = nil) {
       var components = CurrencyLayer.urlComponents
       components.path = name.isEmpty ? "" : "/\(name)"
       if let newItems = queryItems {
         components.queryItems!.append(contentsOf: newItems)
       }
+
       url = components.url!
+      self.session = session
     }
   }
 }
 
+// list endpoint
 extension CurrencyLayer.Endpoint {
+  static let listSession = URLSession(
+    configuration: URLSessionConfiguration.ephemeral
+  )
+
   static var list: Self {
-    CurrencyLayer.Endpoint(name: "list")
+    return CurrencyLayer.Endpoint("list", on: listSession)
   }
 }
 
+// live endpoint
 extension CurrencyLayer.Endpoint {
   static var live: Self {
-    CurrencyLayer.Endpoint(name: "live")
+    CurrencyLayer.Endpoint("live")
   }
 }
 
-extension CurrencyLayer {
-  struct SuccessData: Codable {
-    let success: Bool
-  }
-}
+// MARK: - Data representation
 
+// error representation
 extension CurrencyLayer {
   struct Error: Codable {
     let code: Int
@@ -58,29 +67,24 @@ extension CurrencyLayer {
   }
 
   struct ErrorData: Codable {
+    let success: Bool
     let error: Error
   }
 }
 
 extension CurrencyLayer.Error: Error {}
 
+// currency list representation
 extension CurrencyLayer {
-  struct LegalData: Codable {
-    let terms: String
-    let privacy: String
-  }
-}
-
-extension CurrencyLayer {
-  typealias CurrencyData = [String : String]
   struct ListData: Codable {
     let success: Bool
     let terms: String
     let privacy: String
-    let currencies: CurrencyData
+    let currencies: Currency.ListRepresentation
   }
 }
 
+// quote list representation
 extension CurrencyLayer {
   typealias QuoteData = [String : String]
   struct LiveData: Codable {
@@ -90,10 +94,14 @@ extension CurrencyLayer {
   }
 }
 
+// MARK: - Publishers
+
+// list publisher
 extension CurrencyLayer {
-  static func listPublisher() -> AnyPublisher<CurrencyData, Swift.Error> {
-    let publisher = URLSession.shared.dataTaskPublisher(for: Endpoint.list.url)
-    return publisher
+  static func listPublisher() -> AnyPublisher<Currency.ListRepresentation, Swift.Error> {
+    let endpoint = Endpoint.list
+    let session  = endpoint.session ?? CurrencyLayer.session
+    return session.dataTaskPublisher(for: endpoint.url)
       .tryMap() { element -> Data in
         guard let httpResponse = element.response as? HTTPURLResponse,
               httpResponse.statusCode == 200 else {
@@ -103,8 +111,8 @@ extension CurrencyLayer {
         return element.data
       }
       .decode(type: ListData.self, decoder: JSONDecoder())
-      .tryMap() { element -> CurrencyData in
-        return element.currencies
+      .tryMap() { listData -> Currency.ListRepresentation in
+        return listData.currencies
       }
       .eraseToAnyPublisher()
   }

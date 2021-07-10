@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct CurrencyConvertView: View {
-  @StateObject var model = ViewModel()
+  @Binding var presentList: Bool
+  @EnvironmentObject var model: ViewModel
 
   var body: some View {
     VStack(alignment: .leading) {
@@ -19,10 +20,11 @@ struct CurrencyConvertView: View {
       TextField(
         "Amount",
         value: $model.conversion.amount,
-        formatter: ViewModel.formatter
+        formatter: ViewModel.numberFormatter
       )
 
       QuoteView(
+        presentList: $presentList,
         from: model.conversion.from,
         to: model.conversion.to
       )
@@ -33,16 +35,19 @@ struct CurrencyConvertView: View {
 }
 
 struct QuoteView: View {
+  @Binding var presentList: Bool
   var from: Currency
   var to: Currency
 
   var body: some View {
     VStack {
       CurrencyButton(
+        presentList: $presentList,
         currency: from
       )
 
       CurrencyButton(
+        presentList: $presentList,
         currency: to
       )
     }
@@ -50,13 +55,14 @@ struct QuoteView: View {
 }
 
 struct CurrencyButton: View {
+  @Binding var presentList: Bool
   let currency: Currency
 
   var body: some View {
     VStack(alignment: .leading) {
       Button(
         action: {
-
+          presentList.toggle()
         },
 
         label: {
@@ -78,6 +84,10 @@ struct CurrencyButton: View {
 
 struct CurrencyConvertView_Previews: PreviewProvider {
   static var previews: some View {
-    CurrencyConvertView()
+    let model = ViewModel()
+    CurrencyConvertView(
+      presentList: .constant(false)
+    )
+    .environmentObject(model)
   }
 }
