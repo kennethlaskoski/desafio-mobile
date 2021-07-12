@@ -26,11 +26,11 @@ struct SourceView: View {
     VStack {
       TextField(
         "Amount",
-        value: $model.sourceAmount,
+        value: $model.source.value,
         formatter: model.formatter
       )
 
-      CurrencyButton(currency: $model.sourceCurrency)
+      CurrencyButton(unit: $model.sourceUnit)
     }
   }
 }
@@ -41,8 +41,8 @@ struct QuoteView: View {
   var body: some View {
     VStack {
       Text("X")
-      Text(model.formattedQuoteAmount)
-      CurrencyButton(currency: $model.quoteCurrency)
+      Text(model.formattedQuote)
+      CurrencyButton(unit: $model.quote)
     }
   }
 }
@@ -59,13 +59,13 @@ struct ResultView: View {
 }
 
 struct CurrencyButton: View {
-  @Binding var currency: Currency
+  @Binding var unit: Money
   @State private var presentList = false
 
   var body: some View {
     VStack(alignment: .leading) {
       NavigationLink(
-        destination: ListView(selected: $currency),
+        destination: ListView(selected: $unit),
         isActive: $presentList
       ) { EmptyView() }
 
@@ -74,7 +74,7 @@ struct CurrencyButton: View {
       }
       label: {
         HStack {
-          CurrencyView(currency: currency)
+          CurrencyView(currency: unit.currency)
           Spacer()
         }
         .foregroundColor(.white)

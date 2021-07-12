@@ -10,11 +10,10 @@ import Foundation
 
 // MARK: View data
 class ListModel: ObservableObject {
-  @Published private var lastListRefresh: Date?
-  var currencies: [Currency] {
-    Currency.names.map { pair in
-        Currency(id: pair.key, name: pair.value)
-      }.sorted(by: { lhs, rhs in lhs.id < rhs.id })
+  @Published private var lastRefresh: Date?
+  var quotes: [Quote.ID: Quote] = [Quote.dollar.id: .dollar]
+  var currencies: [Quote] {
+    quotes.map { (_, quote) in quote }
   }
 
   private var cancellable: AnyCancellable?
@@ -29,8 +28,8 @@ extension ListModel {
     return formatter
   }()
 
-  var lastRefresh: String {
-    lastListRefresh == nil ? "never" : ListModel.dateFormatter.string(from: lastListRefresh!)
+  var formattedLastRefresh: String {
+    lastRefresh == nil ? "never" : ListModel.dateFormatter.string(from: lastRefresh!)
   }
 }
 
@@ -44,7 +43,19 @@ extension ListModel {
         receiveCompletion: { completion in
           switch completion {
           case .finished:
-            self.lastListRefresh = Date()
+            let newQuotes = Currency.names.keys.map { symbol in
+              (
+                symbol,
+                Quote(
+                  symbol: symbol,
+                  converter: UnitConverterLinear(coefficient: 1.0)
+                )
+              )
+            }
+            self.quotes.merge(newQuotes) { current, _ in
+              current
+            }
+            self.lastRefresh = Date()
           case .failure(let error):
             print(error)
           }
@@ -52,7 +63,7 @@ extension ListModel {
         },
 
         receiveValue: { list in
-          Currency.names = list
+          Currency.names.merge(list) { (_, new) in new }
         }
       )
   }

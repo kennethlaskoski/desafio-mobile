@@ -23,7 +23,7 @@ struct CurrencyView: View {
 
 struct CurrencyView_Previews: PreviewProvider {
   static var previews: some View {
-    let currency = Currency(id: "EUR", name: "Euro")
+    let currency = Currency(id: Money.dollar.symbol, name: "United States Dollar")
     CurrencyView(currency: currency)
   }
 }

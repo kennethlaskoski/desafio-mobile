@@ -7,8 +7,22 @@
 
 import Foundation
 
+// We define the dimension
+// for finacial quantities
+final class Money: Dimension {
+
+  // With the dollar as
+  // our reference unit
+  static let dollar = Money(
+    symbol: "USD",
+    converter: UnitConverterLinear(coefficient: 1.0)
+  )
+
+  override class func baseUnit() -> Money {
+    return dollar
+  }
+}
+
 // Various names for financial amounts
-typealias Value = Measurement<Finance>
-typealias Price = Measurement<Finance>
-typealias Quote = Measurement<Finance>
-typealias Money = Measurement<Finance>
+typealias Price = Measurement<Money>
+typealias Value = Measurement<Money>

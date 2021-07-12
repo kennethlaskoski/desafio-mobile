@@ -9,18 +9,18 @@ import SwiftUI
 
 struct ListView: View {
   @EnvironmentObject var model: ListModel
-  @Binding var selected: Currency
+  @Binding var selected: Quote
 
   var body: some View {
     VStack {
-      List(model.currencies) { currency in
-        let match = currency == selected
+      List(model.currencies) { quote in
+        let match = quote == selected
         Button {
-          selected = currency
+          selected = quote
         }
         label: {
           HStack {
-            CurrencyView(currency: currency)
+            CurrencyView(currency: quote.currency)
 
             Spacer()
 
@@ -36,7 +36,7 @@ struct ListView: View {
       }
       label: {
         HStack {
-          Text("Last refresh: \(model.lastRefresh)")
+          Text("Last refresh: \(model.formattedLastRefresh)")
             .font(.subheadline)
           Spacer()
           Label("Refresh", systemImage: "arrow.triangle.2.circlepath")
@@ -51,8 +51,7 @@ struct ListView: View {
 
 struct CurrencyListView_Previews: PreviewProvider {
   static var previews: some View {
-    let currency = Currency(id: "!!!", name: "none")
-    ListView(selected: .constant(currency))
+    ListView(selected: .constant(.dollar))
       .environmentObject(ListModel())
   }
 }

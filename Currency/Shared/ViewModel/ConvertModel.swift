@@ -8,13 +8,13 @@
 import Foundation
 
 class ConvertModel: ObservableObject {
-  private static let defaultSource = Money(value: 1.0, unit: .dollar)
+  private static let defaultSource = Value(value: 1.0, unit: .dollar)
 
   @Published var source = defaultSource
-  @Published var quote = defaultSource
+  @Published var quote = defaultSource.unit
 
-  var result: Money {
-    source.converted(to: quote.unit)
+  var result: Value {
+    source.converted(to: quote)
   }
 }
 
@@ -32,8 +32,9 @@ extension ConvertModel {
     ConvertModel.formatter
   }
 
-  var formattedQuoteAmount: String {
-    formatter.string(from: quote.value as NSNumber)!
+  var formattedQuote: String {
+    let rate = quote.converter.value(fromBaseUnitValue: source.unit.converter.baseUnitValue(fromValue: 1.0))
+    return formatter.string(from: rate as NSNumber)!
   }
 
   var formattedResult: String {
@@ -43,20 +44,8 @@ extension ConvertModel {
 
 // MARK: View binding
 extension ConvertModel {
-  var sourceAmount: Double {
-    get { source.value }
-    set { source = Money(value: newValue, unit: source.unit) }
-  }
-
-  var sourceCurrency: Currency {
-    get { source.unit.currency! }
-    set { source = Money(value: source.value, unit: Finance(symbol: newValue.id)) }
-  }
-}
-
-extension ConvertModel {
-  var quoteCurrency: Currency {
-    get { quote.unit.currency! }
-    set { quote = Quote(value: quote.value, unit: Finance(symbol: newValue.id)) }
+  var sourceUnit: Money {
+    get { source.unit }
+    set { source = Value(value: source.value, unit: newValue) }
   }
 }
