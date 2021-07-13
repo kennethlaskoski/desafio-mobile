@@ -20,25 +20,8 @@ struct ContentView: View {
       .navigationViewStyle(StackNavigationViewStyle())
       .environmentObject(listModel)
       .environmentObject(convertModel)
-
-      Spacer()
-
-      Button {
-        listModel.refreshList()
-        convertModel.refreshQuotes()
-      }
-      label: {
-        HStack {
-          Text("Last refresh: \(convertModel.formattedLastRefresh)")
-            .font(.subheadline)
-          Spacer()
-          Label("Refresh", systemImage: "arrow.triangle.2.circlepath")
-            .font(.headline)
-        }
-        .padding(.vertical, 5.0)
-        .padding(.horizontal)
-      }
     }
+    .accentColor(Color(.sRGB, red: 26.0 / 256.0, green: 101.0 / 256.0, blue: 42.0 / 256.0, opacity: 1.0))
   }
 }
 

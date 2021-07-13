@@ -30,6 +30,23 @@ struct ListView: View {
         }
       }
       .navigationTitle("Currencies")
+
+      Spacer()
+
+      Button {
+        model.refreshList()
+      }
+      label: {
+        HStack {
+          Text("Last refresh: \(model.formattedLastRefresh)")
+            .font(.subheadline)
+          Spacer()
+          Label("Refresh", systemImage: "arrow.triangle.2.circlepath")
+            .font(.headline)
+        }
+        .padding(.vertical, 5.0)
+        .padding(.horizontal)
+      }
     }
   }
 }
