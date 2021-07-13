@@ -11,9 +11,10 @@ import Foundation
 // MARK: View data
 class ListModel: ObservableObject {
   @Published private var lastRefresh: Date?
-  var quotes: [Quote.ID: Quote] = [Quote.dollar.id: .dollar]
   var currencies: [Quote] {
-    quotes.map { (_, quote) in quote }
+    Quote.quotes.map { (symbol, coefficient) in
+      Quote(symbol: symbol, converter: UnitConverterLinear(coefficient: coefficient))
+    }.sorted(by: { lhs, rhs in lhs.id < rhs.id })
   }
 
   private var cancellable: AnyCancellable?
@@ -43,16 +44,11 @@ extension ListModel {
         receiveCompletion: { completion in
           switch completion {
           case .finished:
-            let newQuotes = Currency.names.keys.map { symbol in
-              (
-                symbol,
-                Quote(
-                  symbol: symbol,
-                  converter: UnitConverterLinear(coefficient: 1.0)
-                )
-              )
-            }
-            self.quotes.merge(newQuotes) { current, _ in
+            Quote.quotes.merge(
+              Quote.names.keys.map { symbol in
+                (symbol, 1.0)
+              }
+            ) { current, _ in
               current
             }
             self.lastRefresh = Date()
@@ -63,7 +59,7 @@ extension ListModel {
         },
 
         receiveValue: { list in
-          Currency.names.merge(list) { (_, new) in new }
+          Quote.names.merge(list) { (_, new) in new }
         }
       )
   }

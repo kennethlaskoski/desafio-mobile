@@ -12,16 +12,19 @@ struct Currency: Identifiable, Equatable {
   let name: String
 }
 
-extension Currency {
-  static var names: [ID: String] = [Money.dollar.symbol: "United States Dollar"]
-}
+typealias Quote = Money
 
-extension Money {
-  var currency: Currency {
-    return Currency(id: symbol, name: Currency.names[symbol]!)
-  }
-}
-
-extension Money: Identifiable {
+extension Quote: Identifiable {
   var id: String { symbol }
+}
+
+extension Quote {
+  static var quotes: [ID: Double] = [Quote.dollar.id: 1.0]
+  static var names: [ID: String] = [Money.dollar.id: "United States Dollar"]
+}
+
+extension Quote {
+  var currency: Currency {
+    return Currency(id: symbol, name: Quote.names[symbol] ?? "unknown")
+  }
 }

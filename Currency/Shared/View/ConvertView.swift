@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ConvertView: View {
+  @EnvironmentObject var model: ConvertModel
+
   var body: some View {
     VStack {
       SourceView()
@@ -42,7 +44,7 @@ struct QuoteView: View {
     VStack {
       Text("X")
       Text(model.formattedQuote)
-      CurrencyButton(unit: $model.quote)
+      CurrencyButton(unit: $model.resultUnit)
     }
   }
 }
