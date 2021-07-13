@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ListView: View {
   @EnvironmentObject var model: ListModel
-  @Binding var selected: Quote
+  @Binding var selected: Money
 
   var body: some View {
     VStack {
@@ -52,8 +52,9 @@ struct ListView: View {
 }
 
 struct CurrencyListView_Previews: PreviewProvider {
+  @State static var selected: Money = .dollar
   static var previews: some View {
-    ListView(selected: .constant(.dollar))
+    ListView(selected: $selected)
       .environmentObject(ListModel())
   }
 }

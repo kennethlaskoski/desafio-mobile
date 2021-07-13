@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ConvertView: View {
-  @EnvironmentObject var model: ConvertModel
+  @StateObject var model = ConvertModel()
 
   var body: some View {
     VStack {
@@ -38,6 +38,7 @@ struct ConvertView: View {
         .padding(.horizontal)
       }
     }
+    .environmentObject(model)
   }
 }
 
@@ -77,6 +78,7 @@ struct ResultView: View {
 
 struct CurrencyButton: View {
   @Binding var unit: Money
+  @EnvironmentObject var model: ListModel
   @State private var presentList = false
 
   var body: some View {
@@ -106,8 +108,6 @@ struct CurrencyButton: View {
 
 struct CurrencyConvertView_Previews: PreviewProvider {
   static var previews: some View {
-    let model = ConvertModel()
     ConvertView()
-      .environmentObject(model)
   }
 }
