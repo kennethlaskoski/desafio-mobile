@@ -10,7 +10,7 @@ import Foundation
 
 // MARK: - Common URL components
 struct CurrencyLayer {
-  private static let session = URLSession.shared
+  private static let session = URLSession(configuration: URLSessionConfiguration.ephemeral)
   private static let urlComponents: URLComponents = {
     var components = URLComponents()
     components.scheme = "http"
@@ -24,9 +24,8 @@ struct CurrencyLayer {
 extension CurrencyLayer {
   struct Endpoint {
     let url: URL
-    let session: URLSession?
 
-    init(_ name: String, queryItems: [URLQueryItem]? = nil, on session: URLSession? = nil) {
+    init(_ name: String, queryItems: [URLQueryItem]? = nil) {
       var components = CurrencyLayer.urlComponents
       components.path = name.isEmpty ? "" : "/\(name)"
       if let newItems = queryItems {
@@ -34,19 +33,14 @@ extension CurrencyLayer {
       }
 
       url = components.url!
-      self.session = session
     }
   }
 }
 
 // list endpoint
 extension CurrencyLayer.Endpoint {
-  static let listSession = URLSession(
-    configuration: URLSessionConfiguration.ephemeral
-  )
-
   static var list: Self {
-    return CurrencyLayer.Endpoint("list", on: listSession)
+    return CurrencyLayer.Endpoint("list")
   }
 }
 
@@ -81,9 +75,6 @@ extension Currency {
 
 extension CurrencyLayer {
   struct ListData: Codable {
-    let success: Bool
-    let terms: String
-    let privacy: String
     let currencies: Currency.ListRepresentation
   }
 }
@@ -95,11 +86,6 @@ extension Quote {
 
 extension CurrencyLayer {
   struct LiveData: Codable {
-    let success: Bool
-    let terms: String
-    let privacy: String
-    let timestamp: Int
-    let source: String
     let quotes: Quote.ListRepresentation
   }
 }
@@ -109,9 +95,7 @@ extension CurrencyLayer {
 // list publisher
 extension CurrencyLayer {
   static func listPublisher() -> AnyPublisher<Currency.ListRepresentation, Swift.Error> {
-    let endpoint = Endpoint.list
-    let session  = endpoint.session ?? CurrencyLayer.session
-    return session.dataTaskPublisher(for: endpoint.url)
+    return session.dataTaskPublisher(for: Endpoint.list.url)
       .tryMap() { element -> Data in
         guard let httpResponse = element.response as? HTTPURLResponse,
               httpResponse.statusCode == 200 else {
@@ -131,9 +115,7 @@ extension CurrencyLayer {
 // live publisher
 extension CurrencyLayer {
   static func livePublisher() -> AnyPublisher<Quote.ListRepresentation, Swift.Error> {
-    let endpoint = Endpoint.live
-    let session  = endpoint.session ?? CurrencyLayer.session
-    return session.dataTaskPublisher(for: endpoint.url)
+    return session.dataTaskPublisher(for: Endpoint.live.url)
       .tryMap() { element -> Data in
         guard let httpResponse = element.response as? HTTPURLResponse,
               httpResponse.statusCode == 200 else {
