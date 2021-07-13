@@ -25,7 +25,7 @@ struct ListView: View {
             Spacer()
 
             Label("", systemImage: match ? "checkmark.circle.fill" : "circle")
-
+              .labelStyle(IconOnlyLabelStyle())
           }
         }
       }
