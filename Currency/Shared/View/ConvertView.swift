@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ConvertView: View {
-  @StateObject var model = ConvertModel()
+  @ObservedObject var model: ConvertModel
 
   var body: some View {
     VStack {
@@ -24,7 +24,7 @@ struct ConvertView: View {
       Spacer()
 
       Button {
-        model.refreshQuotes()
+        model.refreshLive()
       }
       label: {
         HStack {
@@ -49,16 +49,17 @@ struct SourceView: View {
     VStack {
       TextField(
         "Amount",
-        value: $model.source.value,
+        value: $model.amount,
         formatter: model.formatter
       )
       .padding(.vertical)
       .allowsTightening(true)
 
-      CurrencyButton(unit: $model.sourceUnit)
-        Text("x \(model.formattedQuote) =")
-          .font(.subheadline)
-      .padding(.bottom)
+      CurrencyButton(currency: $model.sourceCurrency)
+
+      Text("x \(model.formattedQuote) =")
+        .font(.subheadline)
+        .padding(.bottom)
     }
   }
 }
@@ -71,20 +72,24 @@ struct ResultView: View {
       Text(model.formattedResult)
         .font(.largeTitle)
         .padding(.bottom)
-      CurrencyButton(unit: $model.resultUnit)
+
+      CurrencyButton(currency: $model.resultCurrency)
     }
   }
 }
 
 struct CurrencyButton: View {
-  @Binding var unit: Money
-  @EnvironmentObject var model: ListModel
+  @EnvironmentObject var model: CurrencyModel
+  @Binding var currency: Currency
   @State private var presentList = false
 
   var body: some View {
     VStack(alignment: .leading) {
       NavigationLink(
-        destination: ListView(selected: $unit),
+        destination: ListView(
+          model: model.listViewModel,
+          current: $currency
+        ),
         isActive: $presentList
       ) { EmptyView() }
 
@@ -93,7 +98,7 @@ struct CurrencyButton: View {
       }
       label: {
         HStack {
-          CurrencyView(currency: unit.currency)
+          CurrencyView(currency: $currency)
           Spacer()
         }
         .foregroundColor(.white)
@@ -107,7 +112,9 @@ struct CurrencyButton: View {
 }
 
 struct CurrencyConvertView_Previews: PreviewProvider {
+  static var model = CurrencyModel()
   static var previews: some View {
-    ConvertView()
+    ConvertView(model: model.convertViewModel)
+      .environmentObject(model)
   }
 }

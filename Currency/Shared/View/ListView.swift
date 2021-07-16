@@ -8,23 +8,22 @@
 import SwiftUI
 
 struct ListView: View {
-  @EnvironmentObject var model: ListModel
-  @Binding var selected: Money
+  @ObservedObject var model: ListModel
+  @Binding var current: Currency
 
   var body: some View {
     VStack {
-      List(model.currencies) { quote in
-        let match = quote == selected
+      List(model.currencies) { currency in
         Button {
-          selected = quote
+          current = currency
         }
         label: {
           HStack {
-            CurrencyView(currency: quote.currency)
+            CurrencyView(currency: .constant(currency))
 
             Spacer()
 
-            Label("", systemImage: match ? "checkmark.circle.fill" : "circle")
+            Label("", systemImage: currency == current ? "checkmark.circle.fill" : "circle")
               .labelStyle(IconOnlyLabelStyle())
           }
         }
@@ -52,9 +51,12 @@ struct ListView: View {
 }
 
 struct CurrencyListView_Previews: PreviewProvider {
-  @State static var selected: Money = .dollar
+  @State static var current: Currency = .dollar
   static var previews: some View {
-    ListView(selected: $selected)
-      .environmentObject(ListModel())
+    ListView(
+      model: CurrencyModel().listViewModel,
+      current: $current
+    )
+    .environmentObject(CurrencyModel().listViewModel)
   }
 }

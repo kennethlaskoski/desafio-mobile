@@ -8,14 +8,15 @@
 import SwiftUI
 
 struct ContentView: View {
+  @EnvironmentObject var model: CurrencyModel
+
   var body: some View {
-    VStack {
-      NavigationView {
-        ConvertView()
-          .navigationTitle("Convert")
-      }
-      .navigationViewStyle(StackNavigationViewStyle())
+    NavigationView {
+      ConvertView(model: model.convertViewModel)
+        .navigationTitle("Convert")
     }
+    .navigationViewStyle(StackNavigationViewStyle())
+    // set accent color to dollar green
     .accentColor(Color(.sRGB, red: 26.0 / 256.0, green: 101.0 / 256.0, blue: 42.0 / 256.0, opacity: 1.0))
   }
 }
@@ -23,5 +24,6 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
     ContentView()
+      .environmentObject(CurrencyModel())
   }
 }

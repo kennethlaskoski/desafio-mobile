@@ -9,26 +9,30 @@ import Combine
 import Foundation
 
 class ConvertModel: ObservableObject {
-  @Published private var lastRefresh: Date?
-  private static let defaultSource = Value(value: 1.0, unit: .dollar)
+  private let parent: CurrencyModel
 
-  @Published var source = defaultSource
-  var sourceUnit: Money {
-    get { source.unit }
-    set { source = Value(value: source.value, unit: newValue) }
+  init(from parent: CurrencyModel) {
+    self.parent = parent
   }
-  var rate: Value {
-    Value(value: 1.0, unit: source.unit).converted(to: resultUnit)
+
+  @Published private var lastRefresh: Date?
+  @Published var amount = 1.0
+  @Published var sourceCurrency: Currency = .dollar
+  @Published var resultCurrency: Currency = .dollar
+
+  var rate: Amount {
+    Amount(value: 1.0, unit: sourceCurrency.unit).converted(to: resultCurrency.unit)
   }
-  @Published var resultUnit = defaultSource.unit
-  var result: Value { source.converted(to: resultUnit) }
+  var result: Amount {
+    Amount(value: amount, unit: sourceCurrency.unit).converted(to: resultCurrency.unit)
+  }
 
   var cancellable: AnyCancellable?
 }
 
 // MARK: View presentation
 extension ConvertModel {
-  private static var formatter: NumberFormatter = {
+  private static let formatter: NumberFormatter = {
     var formatter = NumberFormatter()
     formatter.numberStyle = .decimal
     formatter.minimumFractionDigits = 2
@@ -40,7 +44,7 @@ extension ConvertModel {
     ConvertModel.formatter
   }
 
-  private static var rateFormatter: NumberFormatter = {
+  private static let rateFormatter: NumberFormatter = {
     var formatter = NumberFormatter()
     formatter.numberStyle = .decimal
     formatter.minimumFractionDigits = 6
@@ -62,7 +66,7 @@ extension ConvertModel {
 }
 
 extension ConvertModel {
-  private static var dateFormatter: DateFormatter = {
+  private static let dateFormatter: DateFormatter = {
     var formatter = DateFormatter()
     formatter.dateStyle = .short
     formatter.timeStyle = .short
@@ -77,17 +81,16 @@ extension ConvertModel {
 // MARK: API Connection
 extension ConvertModel {
 
-  func refreshQuotes() {
+  func refreshLive() {
     cancellable = CurrencyLayer.livePublisher()
+      .flatMap { list in
+        list.publisher
+      }
       .receive(on: DispatchQueue.main)
       .sink(
         receiveCompletion: { completion in
           switch completion {
           case .finished:
-            self.resultUnit = Quote(
-              symbol: self.resultUnit.symbol,
-              converter: UnitConverterLinear(coefficient: Quote.quotes[self.resultUnit.symbol] ?? 1.0)
-            )
             self.lastRefresh = Date()
           case .failure(let error):
             print(error)
@@ -95,12 +98,12 @@ extension ConvertModel {
           self.cancellable?.cancel()
         },
 
-        receiveValue: { list in
-          let mapped = list.map { id, value in
-            (String(id.dropFirst(3)), 1.0 / value)
-          }
-          Quote.quotes.merge(mapped) {
-            (_, new) in new
+        receiveValue: { key, value in
+          let key = String(key.dropFirst(3))
+          if let currency = self.parent.currencies[key] {
+            self.parent.currencies[key] = Currency(id: key, name: currency.name, quote: value)
+          } else {
+            self.parent.currencies[key] = Currency(id: key, name: "unknown", quote: value)
           }
         }
       )

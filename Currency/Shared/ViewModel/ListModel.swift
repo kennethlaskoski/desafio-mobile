@@ -10,11 +10,15 @@ import Foundation
 
 // MARK: View data
 class ListModel: ObservableObject {
+  private let parent: CurrencyModel
+
+  init(from parent: CurrencyModel) {
+    self.parent = parent
+  }
+
   @Published private var lastRefresh: Date?
-  var currencies: [Quote] {
-    Quote.quotes.map { (symbol, coefficient) in
-      Quote(symbol: symbol, converter: UnitConverterLinear(coefficient: coefficient))
-    }.sorted(by: { lhs, rhs in lhs.id < rhs.id })
+  var currencies: [Currency] {
+    parent.currencies.map { $1 }.sorted { lhs, rhs in lhs.id < rhs.id }
   }
 
   private var cancellable: AnyCancellable?
@@ -22,7 +26,7 @@ class ListModel: ObservableObject {
 
 // MARK: View presentation
 extension ListModel {
-  private static var dateFormatter: DateFormatter = {
+  private static let dateFormatter: DateFormatter = {
     var formatter = DateFormatter()
     formatter.dateStyle = .short
     formatter.timeStyle = .short
@@ -39,18 +43,14 @@ extension ListModel {
 
   func refreshList() {
     cancellable = CurrencyLayer.listPublisher()
+      .flatMap { list in
+        list.publisher
+      }
       .receive(on: DispatchQueue.main)
       .sink(
         receiveCompletion: { completion in
           switch completion {
           case .finished:
-            Quote.quotes.merge(
-              Quote.names.keys.map { symbol in
-                (symbol, 1.0)
-              }
-            ) { current, _ in
-              current
-            }
             self.lastRefresh = Date()
           case .failure(let error):
             print(error)
@@ -58,8 +58,12 @@ extension ListModel {
           self.cancellable?.cancel()
         },
 
-        receiveValue: { list in
-          Quote.names.merge(list) { (_, new) in new }
+        receiveValue: { key, value in
+          if let currency = self.parent.currencies[key] {
+            self.parent.currencies[key] = Currency(id: key, name: value, quote: currency.quote)
+          } else {
+            self.parent.currencies[key] = Currency(id: key, name: value, quote: 1.0)
+          }
         }
       )
   }

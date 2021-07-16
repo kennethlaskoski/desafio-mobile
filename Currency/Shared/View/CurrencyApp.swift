@@ -9,12 +9,12 @@ import SwiftUI
 
 @main
 struct CurrencyApp: App {
-  @StateObject var listModel = ListModel()
+  @StateObject var model = CurrencyModel()
 
   var body: some Scene {
     WindowGroup {
       ContentView()
-        .environmentObject(listModel)
+        .environmentObject(model)
     }
   }
 }

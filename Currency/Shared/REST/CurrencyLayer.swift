@@ -68,25 +68,22 @@ extension CurrencyLayer {
 
 extension CurrencyLayer.Error: Error {}
 
-// currency list representation
 extension Currency {
-  typealias ListRepresentation = [ID: String]
+  typealias ListRepresentation = [String: String]
+  typealias LiveRepresentation = [String: Double]
 }
 
+// list representation
 extension CurrencyLayer {
   struct ListData: Codable {
     let currencies: Currency.ListRepresentation
   }
 }
 
-// quote list representation
-extension Quote {
-  typealias ListRepresentation = [ID: Double]
-}
-
+// live representation
 extension CurrencyLayer {
   struct LiveData: Codable {
-    let quotes: Quote.ListRepresentation
+    let quotes: Currency.LiveRepresentation
   }
 }
 
@@ -114,7 +111,7 @@ extension CurrencyLayer {
 
 // live publisher
 extension CurrencyLayer {
-  static func livePublisher() -> AnyPublisher<Quote.ListRepresentation, Swift.Error> {
+  static func livePublisher() -> AnyPublisher<Currency.LiveRepresentation, Swift.Error> {
     return session.dataTaskPublisher(for: Endpoint.live.url)
       .tryMap() { element -> Data in
         guard let httpResponse = element.response as? HTTPURLResponse,
@@ -125,8 +122,8 @@ extension CurrencyLayer {
         return element.data
       }
       .decode(type: LiveData.self, decoder: JSONDecoder())
-      .tryMap() { listData -> Quote.ListRepresentation in
-        return listData.quotes
+      .tryMap() { liveData -> Currency.LiveRepresentation in
+        return liveData.quotes
       }
       .eraseToAnyPublisher()
   }

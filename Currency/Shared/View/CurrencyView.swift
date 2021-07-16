@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CurrencyView: View {
-  let currency: Currency
+  @Binding var currency: Currency
 
   var body: some View {
     HStack(spacing: 13.0) {
@@ -23,7 +23,6 @@ struct CurrencyView: View {
 
 struct CurrencyView_Previews: PreviewProvider {
   static var previews: some View {
-    let currency = Money.dollar.currency
-    CurrencyView(currency: currency)
+    CurrencyView(currency: .constant(.dollar))
   }
 }
