@@ -6,6 +6,7 @@
 //
 
 import Combine
+import Endpoint
 import Foundation
 
 // MARK: - Common URL components
@@ -24,12 +25,12 @@ struct CurrencyLayer: API {
 extension CurrencyLayer {
   // list endpoint
   var list: Endpoint<CurrencyLayer> {
-    Endpoint<CurrencyLayer>("list", for: self)
+    Endpoint<CurrencyLayer>("list", for: self)!
   }
 
   // live endpoint
   var live: Endpoint<CurrencyLayer> {
-    Endpoint<CurrencyLayer>("live", for: self)
+    Endpoint<CurrencyLayer>("live", for: self)!
   }
 }
 
@@ -74,7 +75,7 @@ extension CurrencyLayer {
 // list publisher
 extension CurrencyLayer {
   func listPublisher() -> AnyPublisher<Currency.ListRepresentation, Swift.Error> {
-    return session.dataTaskPublisher(for: list.url)
+    return session.publisher(for: list)
       .tryMap() { element -> Data in
         guard let httpResponse = element.response as? HTTPURLResponse,
               httpResponse.statusCode == 200 else {
@@ -94,7 +95,7 @@ extension CurrencyLayer {
 // live publisher
 extension CurrencyLayer {
   func livePublisher() -> AnyPublisher<Currency.LiveRepresentation, Swift.Error> {
-    return session.dataTaskPublisher(for: live.url)
+    return session.publisher(for: live)
       .tryMap() { element -> Data in
         guard let httpResponse = element.response as? HTTPURLResponse,
               httpResponse.statusCode == 200 else {

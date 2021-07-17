@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Endpoint",
+        "repositoryURL": "https://github.com/kennethlaskoski/Endpoint.git",
+        "state": {
+          "branch": "main",
+          "revision": "626f0535fa584fb3702c8441ef7d21c7fee43b49",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
