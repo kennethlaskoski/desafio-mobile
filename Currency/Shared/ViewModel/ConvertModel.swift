@@ -10,6 +10,7 @@ import Foundation
 
 class ConvertModel: ObservableObject {
   private let parent: CurrencyModel
+  private let api = CurrencyLayer()
 
   init(from parent: CurrencyModel) {
     self.parent = parent
@@ -82,7 +83,7 @@ extension ConvertModel {
 extension ConvertModel {
 
   func refreshLive() {
-    cancellable = CurrencyLayer.livePublisher()
+    cancellable = api.livePublisher()
       .flatMap { list in
         list.publisher
       }

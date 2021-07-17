@@ -11,6 +11,7 @@ import Foundation
 // MARK: View data
 class ListModel: ObservableObject {
   private let parent: CurrencyModel
+  private let api = CurrencyLayer()
 
   init(from parent: CurrencyModel) {
     self.parent = parent
@@ -42,7 +43,7 @@ extension ListModel {
 extension ListModel {
 
   func refreshList() {
-    cancellable = CurrencyLayer.listPublisher()
+    cancellable = api.listPublisher()
       .flatMap { list in
         list.publisher
       }

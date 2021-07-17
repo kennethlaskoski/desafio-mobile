@@ -15,7 +15,7 @@ struct ContentView: View {
       ConvertView(model: model.convertViewModel)
         .navigationTitle("Convert")
     }
-    .navigationViewStyle(StackNavigationViewStyle())
+//    .navigationViewStyle(StackNavigationViewStyle())
     // set accent color to dollar green
     .accentColor(Color(.sRGB, red: 26.0 / 256.0, green: 101.0 / 256.0, blue: 42.0 / 256.0, opacity: 1.0))
   }

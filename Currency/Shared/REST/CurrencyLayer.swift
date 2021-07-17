@@ -9,9 +9,9 @@ import Combine
 import Foundation
 
 // MARK: - Common URL components
-struct CurrencyLayer {
-  private static let session = URLSession(configuration: URLSessionConfiguration.ephemeral)
-  private static let urlComponents: URLComponents = {
+struct CurrencyLayer: API {
+  let session = URLSession(configuration: URLSessionConfiguration.ephemeral)
+  let components: URLComponents = {
     var components = URLComponents()
     components.scheme = "http"
     components.host = "api.currencylayer.com"
@@ -22,32 +22,14 @@ struct CurrencyLayer {
 
 // MARK: - Endpoints
 extension CurrencyLayer {
-  struct Endpoint {
-    let url: URL
-
-    init(_ name: String, queryItems: [URLQueryItem]? = nil) {
-      var components = CurrencyLayer.urlComponents
-      components.path = name.isEmpty ? "" : "/\(name)"
-      if let newItems = queryItems {
-        components.queryItems!.append(contentsOf: newItems)
-      }
-
-      url = components.url!
-    }
+  // list endpoint
+  var list: Endpoint<CurrencyLayer> {
+    Endpoint<CurrencyLayer>("list", for: self)
   }
-}
 
-// list endpoint
-extension CurrencyLayer.Endpoint {
-  static var list: Self {
-    return CurrencyLayer.Endpoint("list")
-  }
-}
-
-// live endpoint
-extension CurrencyLayer.Endpoint {
-  static var live: Self {
-    CurrencyLayer.Endpoint("live")
+  // live endpoint
+  var live: Endpoint<CurrencyLayer> {
+    Endpoint<CurrencyLayer>("live", for: self)
   }
 }
 
@@ -91,8 +73,8 @@ extension CurrencyLayer {
 
 // list publisher
 extension CurrencyLayer {
-  static func listPublisher() -> AnyPublisher<Currency.ListRepresentation, Swift.Error> {
-    return session.dataTaskPublisher(for: Endpoint.list.url)
+  func listPublisher() -> AnyPublisher<Currency.ListRepresentation, Swift.Error> {
+    return session.dataTaskPublisher(for: list.url)
       .tryMap() { element -> Data in
         guard let httpResponse = element.response as? HTTPURLResponse,
               httpResponse.statusCode == 200 else {
@@ -111,8 +93,8 @@ extension CurrencyLayer {
 
 // live publisher
 extension CurrencyLayer {
-  static func livePublisher() -> AnyPublisher<Currency.LiveRepresentation, Swift.Error> {
-    return session.dataTaskPublisher(for: Endpoint.live.url)
+  func livePublisher() -> AnyPublisher<Currency.LiveRepresentation, Swift.Error> {
+    return session.dataTaskPublisher(for: live.url)
       .tryMap() { element -> Data in
         guard let httpResponse = element.response as? HTTPURLResponse,
               httpResponse.statusCode == 200 else {
