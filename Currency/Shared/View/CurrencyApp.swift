@@ -9,7 +9,12 @@ import SwiftUI
 
 @main
 struct CurrencyApp: App {
-  @StateObject var model = CurrencyModel()
+  var model: CurrencyModel
+
+  init() {
+    model = CurrencyModel()
+    model.refreshNames()
+  }
 
   var body: some Scene {
     WindowGroup {

@@ -9,11 +9,8 @@ import Combine
 import Foundation
 
 class CurrencyModel: ObservableObject {
-  @Published private var lastNamesRefresh: Date?
-  @Published private var lastQuotesRefresh: Date?
-
+  @Published private var lastRefresh: Date?
   @Published var currencies: [Currency] = [.dollar]
-  @Published var convertModel = ConvertModel()
 
   private let api = CurrencyLayer()
   private var listCancellable: AnyCancellable?
@@ -40,38 +37,6 @@ extension Currency {
 }
 
 extension CurrencyModel {
-  private static let formatter: NumberFormatter = {
-    var formatter = NumberFormatter()
-    formatter.numberStyle = .decimal
-    formatter.minimumFractionDigits = 2
-    formatter.maximumFractionDigits = 2
-    return formatter
-  }()
-
-  var formatter: NumberFormatter {
-    CurrencyModel.formatter
-  }
-
-  var formattedResult: String {
-    String("\(formatter.string(from: convertModel.result.value as NSNumber)!) \(convertModel.result.unit.symbol)")
-  }
-
-  private static let rateFormatter: NumberFormatter = {
-    var formatter = NumberFormatter()
-    formatter.numberStyle = .decimal
-    formatter.minimumFractionDigits = 6
-    formatter.maximumFractionDigits = 6
-    return formatter
-  }()
-
-  var rateFormatter: NumberFormatter {
-    CurrencyModel.rateFormatter
-  }
-
-  var formattedQuote: String {
-    return String("\(rateFormatter.string(from: convertModel.rate.value as NSNumber)!) \(convertModel.rate.unit.symbol)")
-  }
-
   private static let dateFormatter: DateFormatter = {
     var formatter = DateFormatter()
     formatter.dateStyle = .short
@@ -79,12 +44,8 @@ extension CurrencyModel {
     return formatter
   }()
 
-  var formattedLastNamesRefresh: String {
-    lastNamesRefresh == nil ? "never" : CurrencyModel.dateFormatter.string(from: lastNamesRefresh!)
-  }
-
-  var formattedLastQuotesRefresh: String {
-    lastQuotesRefresh == nil ? "never" : CurrencyModel.dateFormatter.string(from: lastQuotesRefresh!)
+  var formattedLastRefresh: String {
+    lastRefresh == nil ? "never" : CurrencyModel.dateFormatter.string(from: lastRefresh!)
   }
 }
 
@@ -103,8 +64,6 @@ extension CurrencyModel {
               .sorted(by: <)
               .map { Currency(id: $0) }
 
-            self.lastNamesRefresh = Date()
-
           case .failure(let error):
             print(error)
           }
@@ -118,7 +77,7 @@ extension CurrencyModel {
       )
   }
 
-  func refreshQuotes() {
+  func refresh() {
     liveCancellable = api.livePublisher()
       .flatMap { list in
         list.publisher
@@ -128,7 +87,7 @@ extension CurrencyModel {
         receiveCompletion: { completion in
           switch completion {
           case .finished:
-            self.lastQuotesRefresh = Date()
+            self.lastRefresh = Date()
           case .failure(let error):
             print(error)
           }

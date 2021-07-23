@@ -8,13 +8,14 @@
 import SwiftUI
 
 struct ConvertView: View {
-  @EnvironmentObject var model: CurrencyModel
+  @EnvironmentObject var currencyModel: CurrencyModel
+  @State private var convertModel = ConvertModel()
 
   var body: some View {
     VStack {
       VStack {
-        SourceView()
-        ResultView()
+        SourceView(convertModel: $convertModel)
+        ResultView(convertModel: $convertModel)
       }
       .textFieldStyle(RoundedBorderTextFieldStyle())
       .padding(.horizontal)
@@ -24,11 +25,11 @@ struct ConvertView: View {
       Spacer()
 
       Button {
-        model.refreshQuotes()
+        currencyModel.refresh()
       }
       label: {
         HStack {
-          Text("Last refresh: \(model.formattedLastQuotesRefresh)")
+          Text("Last refresh: \(currencyModel.formattedLastRefresh)")
             .font(.subheadline)
           Spacer()
           Label("Refresh", systemImage: "arrow.triangle.2.circlepath")
@@ -42,21 +43,22 @@ struct ConvertView: View {
 }
 
 struct SourceView: View {
-  @EnvironmentObject var model: CurrencyModel
+  @EnvironmentObject var currencyModel: CurrencyModel
+  @Binding var convertModel: ConvertModel
 
   var body: some View {
     VStack {
       TextField(
         "Amount",
-        value: $model.convertModel.amount,
-        formatter: model.formatter
+        value: $convertModel.amount,
+        formatter: convertModel.formatter
       )
       .padding(.vertical)
       .allowsTightening(true)
 
-      CurrencyButton(currency: $model.convertModel.sourceCurrency)
+      CurrencyButton(currency: $convertModel.sourceCurrency)
 
-      Text("x \(model.formattedQuote) =")
+      Text("x \(convertModel.formattedQuote) =")
         .font(.subheadline)
         .padding(.bottom)
     }
@@ -64,21 +66,22 @@ struct SourceView: View {
 }
 
 struct ResultView: View {
-  @EnvironmentObject var model: CurrencyModel
+  @EnvironmentObject var currencyModel: CurrencyModel
+  @Binding var convertModel: ConvertModel
 
   var body: some View {
     VStack {
-      Text(model.formattedResult)
+      Text(convertModel.formattedResult)
         .font(.largeTitle)
         .padding(.bottom)
 
-      CurrencyButton(currency: $model.convertModel.resultCurrency)
+      CurrencyButton(currency: $convertModel.resultCurrency)
     }
   }
 }
 
 struct CurrencyButton: View {
-  @EnvironmentObject var model: CurrencyModel
+  @EnvironmentObject var currencyModel: CurrencyModel
   @Binding var currency: Currency
   @State private var presentList = false
 
