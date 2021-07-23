@@ -15,7 +15,10 @@ struct ContentView: View {
       ConvertView()
         .navigationTitle("Convert")
     }
+    #if os(macOS)
+    #else
     .navigationViewStyle(StackNavigationViewStyle())
+    #endif
   }
 }
 
