@@ -19,4 +19,4 @@ final class Money: Dimension {
   override class func baseUnit() -> Money { reference }
 }
 
-typealias Amount = Measurement<Money>
+typealias Amount = Measurement

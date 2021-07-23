@@ -19,6 +19,8 @@ struct CurrencyLayer: API {
     components.queryItems = [URLQueryItem(name: "access_key", value: "672e3cdb941c218df034c5b44112c19b")]
     return components
   }()
+
+  static let shared = CurrencyLayer()
 }
 
 // MARK: - Endpoints

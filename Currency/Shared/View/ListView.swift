@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ListView: View {
-  @ObservedObject var model: ListModel
+  @EnvironmentObject var model: CurrencyModel
   @Binding var current: Currency
 
   var body: some View {
@@ -19,7 +19,7 @@ struct ListView: View {
         }
         label: {
           HStack {
-            CurrencyView(currency: .constant(currency))
+            CurrencyView(currency: currency)
 
             Spacer()
 
@@ -33,11 +33,11 @@ struct ListView: View {
       Spacer()
 
       Button {
-        model.refreshList()
+        model.refreshNames()
       }
       label: {
         HStack {
-          Text("Last refresh: \(model.formattedLastRefresh)")
+          Text("Last refresh: \(model.formattedLastNamesRefresh)")
             .font(.subheadline)
           Spacer()
           Label("Refresh", systemImage: "arrow.triangle.2.circlepath")
@@ -53,10 +53,7 @@ struct ListView: View {
 struct CurrencyListView_Previews: PreviewProvider {
   @State static var current: Currency = .dollar
   static var previews: some View {
-    ListView(
-      model: CurrencyModel().listViewModel,
-      current: $current
-    )
-    .environmentObject(CurrencyModel().listViewModel)
+    ListView(current: $current)
+    .environmentObject(CurrencyModel())
   }
 }

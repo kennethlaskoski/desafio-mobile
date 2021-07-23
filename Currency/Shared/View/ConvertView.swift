@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ConvertView: View {
-  @ObservedObject var model: ConvertModel
+  @EnvironmentObject var model: CurrencyModel
 
   var body: some View {
     VStack {
@@ -24,11 +24,11 @@ struct ConvertView: View {
       Spacer()
 
       Button {
-        model.refreshLive()
+        model.refreshQuotes()
       }
       label: {
         HStack {
-          Text("Last refresh: \(model.formattedLastRefresh)")
+          Text("Last refresh: \(model.formattedLastQuotesRefresh)")
             .font(.subheadline)
           Spacer()
           Label("Refresh", systemImage: "arrow.triangle.2.circlepath")
@@ -38,24 +38,23 @@ struct ConvertView: View {
         .padding(.horizontal)
       }
     }
-    .environmentObject(model)
   }
 }
 
 struct SourceView: View {
-  @EnvironmentObject var model: ConvertModel
+  @EnvironmentObject var model: CurrencyModel
 
   var body: some View {
     VStack {
       TextField(
         "Amount",
-        value: $model.amount,
+        value: $model.convertModel.amount,
         formatter: model.formatter
       )
       .padding(.vertical)
       .allowsTightening(true)
 
-      CurrencyButton(currency: $model.sourceCurrency)
+      CurrencyButton(currency: $model.convertModel.sourceCurrency)
 
       Text("x \(model.formattedQuote) =")
         .font(.subheadline)
@@ -65,7 +64,7 @@ struct SourceView: View {
 }
 
 struct ResultView: View {
-  @EnvironmentObject var model: ConvertModel
+  @EnvironmentObject var model: CurrencyModel
 
   var body: some View {
     VStack {
@@ -73,7 +72,7 @@ struct ResultView: View {
         .font(.largeTitle)
         .padding(.bottom)
 
-      CurrencyButton(currency: $model.resultCurrency)
+      CurrencyButton(currency: $model.convertModel.resultCurrency)
     }
   }
 }
@@ -86,10 +85,7 @@ struct CurrencyButton: View {
   var body: some View {
     VStack(alignment: .leading) {
       NavigationLink(
-        destination: ListView(
-          model: model.listViewModel,
-          current: $currency
-        ),
+        destination: ListView(current: $currency),
         isActive: $presentList
       ) { EmptyView() }
 
@@ -98,7 +94,7 @@ struct CurrencyButton: View {
       }
       label: {
         HStack {
-          CurrencyView(currency: $currency)
+          CurrencyView(currency: currency)
           Spacer()
         }
         .foregroundColor(.white)
@@ -114,7 +110,7 @@ struct CurrencyButton: View {
 struct CurrencyConvertView_Previews: PreviewProvider {
   static var model = CurrencyModel()
   static var previews: some View {
-    ConvertView(model: model.convertViewModel)
+    ConvertView()
       .environmentObject(model)
   }
 }
