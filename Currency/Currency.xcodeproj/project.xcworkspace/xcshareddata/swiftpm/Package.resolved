@@ -2,11 +2,11 @@
   "object": {
     "pins": [
       {
-        "package": "Endpoint",
-        "repositoryURL": "https://github.com/kennethlaskoski/Endpoint.git",
+        "package": "EndpointPublisher",
+        "repositoryURL": "https://github.com/kennethlaskoski/EndpointPublisher.git",
         "state": {
-          "branch": "main",
-          "revision": "626f0535fa584fb3702c8441ef7d21c7fee43b49",
+          "branch": "gold",
+          "revision": "59f5a41f28806ae7a6ff9f60eb418829d43fae52",
           "version": null
         }
       }

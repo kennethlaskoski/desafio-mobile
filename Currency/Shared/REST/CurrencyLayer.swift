@@ -6,8 +6,8 @@
 //
 
 import Combine
-import Endpoint
 import Foundation
+import EndpointPublisher
 
 // MARK: - Common URL components
 struct CurrencyLayer: API {

@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		9F06A04D2698C75F009AEFB3 /* ListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F06A04C2698C75F009AEFB3 /* ListModel.swift */; };
 		9F06A04E2698C75F009AEFB3 /* ListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F06A04C2698C75F009AEFB3 /* ListModel.swift */; };
+		9F0F1B3826AAA181005FE1C9 /* EndpointPublisher in Frameworks */ = {isa = PBXBuildFile; productRef = 9F0F1B3726AAA181005FE1C9 /* EndpointPublisher */; };
+		9F0F1B3B26AAA19A005FE1C9 /* EndpointPublisher in Frameworks */ = {isa = PBXBuildFile; productRef = 9F0F1B3A26AAA19A005FE1C9 /* EndpointPublisher */; };
 		9F1667B62693A7F000A9EE6C /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1667B52693A7F000A9EE6C /* ListView.swift */; };
 		9F1667B72693A7F000A9EE6C /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1667B52693A7F000A9EE6C /* ListView.swift */; };
 		9F4C7BCC26962A69004BCF89 /* ConvertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F4C7BCB26962A69004BCF89 /* ConvertView.swift */; };
@@ -29,7 +31,6 @@
 		9FCD619526A0DEA200004179 /* CurrencyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FCD619426A0DEA200004179 /* CurrencyModel.swift */; };
 		9FCD619726A137DD00004179 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FCD619626A137DD00004179 /* Currency.swift */; };
 		9FCD619826A137DD00004179 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FCD619626A137DD00004179 /* Currency.swift */; };
-		9FDFCF2626A2DCEF00B3A549 /* Endpoint in Frameworks */ = {isa = PBXBuildFile; productRef = 9FDFCF2526A2DCEF00B3A549 /* Endpoint */; };
 		9FE9A12A2699598F00176598 /* CurrencyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE9A1292699598F00176598 /* CurrencyView.swift */; };
 		9FE9A12B2699598F00176598 /* CurrencyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE9A1292699598F00176598 /* CurrencyView.swift */; };
 		9FFAA84326A2CD6500FE6DCE /* CurrencyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FCD619426A0DEA200004179 /* CurrencyModel.swift */; };
@@ -84,7 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9FDFCF2626A2DCEF00B3A549 /* Endpoint in Frameworks */,
+				9F0F1B3826AAA181005FE1C9 /* EndpointPublisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -92,6 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F0F1B3B26AAA19A005FE1C9 /* EndpointPublisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +114,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9F0F1B3926AAA199005FE1C9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		9F1667B82693A94600A9EE6C /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -134,6 +143,7 @@
 				9F77C1632693991E00D017F3 /* Tests iOS */,
 				9F77C16E2693991E00D017F3 /* Tests macOS */,
 				9F77C1512693991E00D017F3 /* Products */,
+				9F0F1B3926AAA199005FE1C9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -238,7 +248,7 @@
 			);
 			name = "Currency (iOS)";
 			packageProductDependencies = (
-				9FDFCF2526A2DCEF00B3A549 /* Endpoint */,
+				9F0F1B3726AAA181005FE1C9 /* EndpointPublisher */,
 			);
 			productName = "Currency (iOS)";
 			productReference = 9F77C1502693991E00D017F3 /* Currency.app */;
@@ -257,6 +267,9 @@
 			dependencies = (
 			);
 			name = "Currency (macOS)";
+			packageProductDependencies = (
+				9F0F1B3A26AAA19A005FE1C9 /* EndpointPublisher */,
+			);
 			productName = "Currency (macOS)";
 			productReference = 9F77C1582693991E00D017F3 /* Currency.app */;
 			productType = "com.apple.product-type.application";
@@ -332,7 +345,7 @@
 			);
 			mainGroup = 9F77C1432693991C00D017F3;
 			packageReferences = (
-				9FDFCF2426A2DCEF00B3A549 /* XCRemoteSwiftPackageReference "Endpoint" */,
+				9F0F1B3626AAA181005FE1C9 /* XCRemoteSwiftPackageReference "EndpointPublisher" */,
 			);
 			productRefGroup = 9F77C1512693991E00D017F3 /* Products */;
 			projectDirPath = "";
@@ -792,21 +805,26 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		9FDFCF2426A2DCEF00B3A549 /* XCRemoteSwiftPackageReference "Endpoint" */ = {
+		9F0F1B3626AAA181005FE1C9 /* XCRemoteSwiftPackageReference "EndpointPublisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/kennethlaskoski/Endpoint.git";
+			repositoryURL = "https://github.com/kennethlaskoski/EndpointPublisher.git";
 			requirement = {
-				branch = main;
+				branch = gold;
 				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		9FDFCF2526A2DCEF00B3A549 /* Endpoint */ = {
+		9F0F1B3726AAA181005FE1C9 /* EndpointPublisher */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 9FDFCF2426A2DCEF00B3A549 /* XCRemoteSwiftPackageReference "Endpoint" */;
-			productName = Endpoint;
+			package = 9F0F1B3626AAA181005FE1C9 /* XCRemoteSwiftPackageReference "EndpointPublisher" */;
+			productName = EndpointPublisher;
+		};
+		9F0F1B3A26AAA19A005FE1C9 /* EndpointPublisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9F0F1B3626AAA181005FE1C9 /* XCRemoteSwiftPackageReference "EndpointPublisher" */;
+			productName = EndpointPublisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
