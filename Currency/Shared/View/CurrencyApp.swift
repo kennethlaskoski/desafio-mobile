@@ -9,17 +9,23 @@ import SwiftUI
 
 @main
 struct CurrencyApp: App {
-  var model: CurrencyModel
+  var data: CurrencyData
 
   init() {
-    model = CurrencyModel()
-    model.refreshNames()
+    data = CurrencyData()
+    data.refreshNames()
   }
 
   var body: some Scene {
     WindowGroup {
-      ContentView()
-        .environmentObject(model)
+      Group {
+        #if os(macOS)
+        macOSView()
+        #else
+        iOSView()
+        #endif
+      }
+      .environmentObject(data)
     }
   }
 }

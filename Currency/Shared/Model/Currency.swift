@@ -7,6 +7,11 @@
 
 import Foundation
 
-struct Currency: Identifiable, Equatable {
+protocol Asset: Identifiable, Equatable {
+  var id: String { get }
+  var name: String { get }
+}
+
+struct Currency: Asset {
   let id: String
 }

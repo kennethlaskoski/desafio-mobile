@@ -1,5 +1,5 @@
 //
-//  CurrencyView.swift
+//  CurrencyNameView.swift
 //  Currency
 //
 //  Created by Kenneth Laskoski on 10/07/21.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CurrencyView: View {
+struct CurrencyNameView: View {
   let currency: Currency
 
   var body: some View {
@@ -23,6 +23,6 @@ struct CurrencyView: View {
 
 struct CurrencyView_Previews: PreviewProvider {
   static var previews: some View {
-    CurrencyView(currency: .dollar)
+    CurrencyNameView(currency: .dollar)
   }
 }

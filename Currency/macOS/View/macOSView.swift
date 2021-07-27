@@ -1,14 +1,14 @@
 //
-//  ConvertView.swift
-//  Currency
+//  macOSView.swift
+//  Currency (macOS)
 //
-//  Created by Kenneth Laskoski on 07/07/21.
+//  Created by Kenneth Laskoski on 24/07/21.
 //
 
 import SwiftUI
 
-struct ConvertView: View {
-  @EnvironmentObject var currencyModel: CurrencyModel
+struct macOSView: View {
+  @EnvironmentObject var currencyModel: CurrencyData
   @State private var convertModel = ConvertModel()
 
   var body: some View {
@@ -42,8 +42,9 @@ struct ConvertView: View {
   }
 }
 
+
 struct SourceView: View {
-  @EnvironmentObject var currencyModel: CurrencyModel
+  @EnvironmentObject var currencyModel: CurrencyData
   @Binding var convertModel: ConvertModel
 
   var body: some View {
@@ -66,7 +67,7 @@ struct SourceView: View {
 }
 
 struct ResultView: View {
-  @EnvironmentObject var currencyModel: CurrencyModel
+  @EnvironmentObject var currencyModel: CurrencyData
   @Binding var convertModel: ConvertModel
 
   var body: some View {
@@ -81,7 +82,7 @@ struct ResultView: View {
 }
 
 struct CurrencyButton: View {
-  @EnvironmentObject var currencyModel: CurrencyModel
+  @EnvironmentObject var currencyModel: CurrencyData
   @Binding var currency: Currency
   @State private var presentList = false
 
@@ -97,7 +98,7 @@ struct CurrencyButton: View {
       }
       label: {
         HStack {
-          CurrencyView(currency: currency)
+          CurrencyNameView(currency: currency)
           Spacer()
         }
         .foregroundColor(.white)
@@ -110,10 +111,14 @@ struct CurrencyButton: View {
   }
 }
 
-struct CurrencyConvertView_Previews: PreviewProvider {
-  static var model = CurrencyModel()
+struct SwiftUIView_Previews: PreviewProvider {
   static var previews: some View {
-    ConvertView()
-      .environmentObject(model)
+    Group {
+      macOSView()
+        .preferredColorScheme(.light)
+      macOSView()
+        .preferredColorScheme(.dark)
+    }
+    .environmentObject(CurrencyData())
   }
 }

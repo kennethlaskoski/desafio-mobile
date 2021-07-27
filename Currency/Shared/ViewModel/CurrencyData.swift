@@ -1,5 +1,5 @@
 //
-//  CurrencyModel.swift
+//  CurrencyData.swift
 //  Currency
 //
 //  Created by Kenneth Laskoski on 15/07/21.
@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 
-class CurrencyModel: ObservableObject {
+class CurrencyData: ObservableObject {
   @Published private var lastRefresh: Date?
   @Published var currencies: [Currency] = [.dollar]
 
@@ -36,7 +36,7 @@ extension Currency {
   }
 }
 
-extension CurrencyModel {
+extension CurrencyData {
   private static let dateFormatter: DateFormatter = {
     var formatter = DateFormatter()
     formatter.dateStyle = .short
@@ -45,11 +45,11 @@ extension CurrencyModel {
   }()
 
   var formattedLastRefresh: String {
-    lastRefresh == nil ? "never" : CurrencyModel.dateFormatter.string(from: lastRefresh!)
+    lastRefresh == nil ? "never" : CurrencyData.dateFormatter.string(from: lastRefresh!)
   }
 }
 
-extension CurrencyModel {
+extension CurrencyData {
   func refreshNames() {
     listCancellable = api.listPublisher()
       .flatMap { list in

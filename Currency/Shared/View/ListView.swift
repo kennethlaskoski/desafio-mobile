@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ListView: View {
-  @EnvironmentObject var model: CurrencyModel
+  @EnvironmentObject var model: CurrencyData
   @Binding var current: Currency
 
   var body: some View {
@@ -19,7 +19,7 @@ struct ListView: View {
         }
         label: {
           HStack {
-            CurrencyView(currency: currency)
+            CurrencyNameView(currency: currency)
 
             Spacer()
 
@@ -33,10 +33,10 @@ struct ListView: View {
   }
 }
 
-struct CurrencyListView_Previews: PreviewProvider {
+struct ListView_Previews: PreviewProvider {
   @State static var current: Currency = .dollar
   static var previews: some View {
     ListView(current: $current)
-    .environmentObject(CurrencyModel())
+    .environmentObject(CurrencyData())
   }
 }
