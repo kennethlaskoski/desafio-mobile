@@ -17,6 +17,7 @@ struct CurrencyNameView: View {
 
       Text(currency.name)
         .font(.callout)
+        .allowsTightening(true)
     }
   }
 }

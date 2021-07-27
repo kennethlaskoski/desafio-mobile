@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct iOSView: View {
-  @EnvironmentObject var model: CurrencyData
-
   var body: some View {
     NavigationView {
       ConvertView()
