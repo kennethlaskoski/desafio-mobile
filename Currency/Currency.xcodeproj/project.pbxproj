@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9F0ADAE526B3650700895410 /* DoubleField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0ADAE426B3650700895410 /* DoubleField.swift */; };
+		9F0ADAE626B3650700895410 /* DoubleField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0ADAE426B3650700895410 /* DoubleField.swift */; };
 		9F0F1B3826AAA181005FE1C9 /* EndpointPublisher in Frameworks */ = {isa = PBXBuildFile; productRef = 9F0F1B3726AAA181005FE1C9 /* EndpointPublisher */; };
 		9F0F1B3B26AAA19A005FE1C9 /* EndpointPublisher in Frameworks */ = {isa = PBXBuildFile; productRef = 9F0F1B3A26AAA19A005FE1C9 /* EndpointPublisher */; };
 		9F0F1B3D26AADEEE005FE1C9 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0F1B3C26AADEEE005FE1C9 /* Currency.swift */; };
@@ -52,6 +54,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9F0ADAE426B3650700895410 /* DoubleField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleField.swift; sourceTree = "<group>"; };
 		9F0F1B3C26AADEEE005FE1C9 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
 		9F1667B52693A7F000A9EE6C /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		9F4C7BCB26962A69004BCF89 /* ConvertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertView.swift; sourceTree = "<group>"; };
@@ -127,6 +130,7 @@
 				9F1667B52693A7F000A9EE6C /* ListView.swift */,
 				9FE9A1292699598F00176598 /* CurrencyNameView.swift */,
 				9F77C14B2693991E00D017F3 /* Assets.xcassets */,
+				9F0ADAE426B3650700895410 /* DoubleField.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -413,6 +417,7 @@
 				9F0F1B3D26AADEEE005FE1C9 /* Currency.swift in Sources */,
 				9FAF6E2A2696B52E00C04A2F /* Money.swift in Sources */,
 				9F1667B62693A7F000A9EE6C /* ListView.swift in Sources */,
+				9F0ADAE526B3650700895410 /* DoubleField.swift in Sources */,
 				9F77C1722693991E00D017F3 /* CurrencyApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -429,6 +434,7 @@
 				9F1667B72693A7F000A9EE6C /* ListView.swift in Sources */,
 				9FE9A12B2699598F00176598 /* CurrencyNameView.swift in Sources */,
 				9FFAA84426A2CD6E00FE6DCE /* ConvertModel.swift in Sources */,
+				9F0ADAE626B3650700895410 /* DoubleField.swift in Sources */,
 				9F77C1732693991E00D017F3 /* CurrencyApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

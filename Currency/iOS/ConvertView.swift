@@ -48,16 +48,10 @@ struct SourceView: View {
 
   var body: some View {
     VStack {
-      TextField(
-        "Amount",
+      DoubleField(
+        title: "Amount",
         value: $convertModel.amount,
-        formatter: convertModel.formatter//,
-//        onEditingChanged: { isEditing in
-//          if !isEditing {
-//
-//          }
-//
-//        }, onCommit: {}
+        formatter: convertModel.formatter
       )
       .keyboardType(.decimalPad)
       .padding(.vertical)
@@ -71,8 +65,8 @@ struct SourceView: View {
       Button {
         UIApplication.shared.sendAction(
           #selector(UIResponder.resignFirstResponder),
-          to: nil, from: nil, for: nil)
-//        convertModel.amount =
+          to: nil, from: nil, for: nil
+        )
       }
       label: {
         Text("=")

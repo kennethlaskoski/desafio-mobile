@@ -24,11 +24,9 @@ struct ConvertModel {
 extension ConvertModel {
   private static let formatter: NumberFormatter = {
     var formatter = NumberFormatter()
-    formatter.numberStyle = .currency
-    formatter.isLenient = true
-    formatter.currencySymbol = ""
-//    formatter.minimumFractionDigits = 2
-//    formatter.maximumFractionDigits = 2
+    formatter.numberStyle = .decimal
+    formatter.minimumFractionDigits = 2
+    formatter.maximumFractionDigits = 2
     return formatter
   }()
 
