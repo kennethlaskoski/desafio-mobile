@@ -48,42 +48,22 @@ struct SourceView: View {
 
   var body: some View {
     VStack {
-      DoubleField(
-        title: "Amount",
-        value: $convertModel.amount,
-        formatter: convertModel.formatter
-      )
-      .keyboardType(.decimalPad)
+      HStack {
+        DoubleField(
+          title: "Amount",
+          value: $convertModel.amount,
+          formatter: convertModel.formatter,
+          buttonTitle: "Convert"
+        )
+      }
       .padding(.vertical)
 
       CurrencyButton(currency: $convertModel.sourceCurrency)
 
-      Text("x \(convertModel.formattedQuote)")
+      Text("x \(convertModel.formattedQuote) =")
         .font(.subheadline)
         .padding(.bottom)
-
-      Button {
-        UIApplication.shared.sendAction(
-          #selector(UIResponder.resignFirstResponder),
-          to: nil, from: nil, for: nil
-        )
-      }
-      label: {
-        Text("=")
-          .font(.system(size: 72.0))
-          .padding(.horizontal, 27.0)
-          .padding(.top, -18.0)
-          .padding(.bottom, -6.0)
-          .overlay(
-            RoundedRectangle(cornerRadius:9.0)
-              .stroke(lineWidth: 3.0)
-          )
-      }
-      .padding(.vertical)
     }
-    .padding(.bottom)
-
-
   }
 }
 

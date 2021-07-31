@@ -17,6 +17,8 @@ struct CurrencyNameView: View {
 
       Text(currency.name)
         .font(.callout)
+        .lineLimit(1)
+        .truncationMode(.middle)
         .allowsTightening(true)
     }
   }
