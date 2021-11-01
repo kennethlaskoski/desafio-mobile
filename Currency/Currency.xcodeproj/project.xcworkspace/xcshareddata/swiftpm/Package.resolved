@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "EndpointPublisher",
+        "repositoryURL": "https://github.com/kennethlaskoski/EndpointPublisher.git",
+        "state": {
+          "branch": "gold",
+          "revision": "99e5662def19ab63d2d4a4d39897f134285407d9",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
