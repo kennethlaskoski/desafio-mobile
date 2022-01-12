@@ -588,7 +588,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4HDBBU25PK;
+				DEVELOPMENT_TEAM = HW3Y59533J;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -596,7 +596,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = br.com.tractrix.Currency;
+				PRODUCT_BUNDLE_IDENTIFIER = br.dev.sr.Currency;
 				PRODUCT_NAME = Currency;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
@@ -610,7 +610,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4HDBBU25PK;
+				DEVELOPMENT_TEAM = HW3Y59533J;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -618,7 +618,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = br.com.tractrix.Currency;
+				PRODUCT_BUNDLE_IDENTIFIER = br.dev.sr.Currency;
 				PRODUCT_NAME = Currency;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
